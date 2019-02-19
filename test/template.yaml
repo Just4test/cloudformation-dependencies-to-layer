@@ -1,0 +1,14 @@
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  nodejs:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs8.10
+      Handler: test.handler
+      CodeUri: ./nodejs
+  python3:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: python3.7
+      Handler: test.handler
+      CodeUri: ./python3

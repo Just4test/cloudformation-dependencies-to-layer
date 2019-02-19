@@ -1,0 +1,5 @@
+test/.dep2layer*
+*.pyc
+/dist
+*.egg-info
+build
