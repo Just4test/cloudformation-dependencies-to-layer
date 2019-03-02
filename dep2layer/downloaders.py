@@ -15,10 +15,9 @@ class PackagerBase:
     self.basedir = basedir
     self.hash = None
     self.depfiles = []
-    
-  @classmethod
-  def isdepfilesexists(cls, resource, basedir):
-    for f in cls.depfiles:
+  
+  def isdepfilesexists(self):
+    for f in self.depfiles:
       if not os.path.isfile(os.path.join(self.basedir, self.resource['Properties']['CodeUri'], f)):
         return False
     return True
