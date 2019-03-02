@@ -80,11 +80,11 @@ def work(templatepath=None, cachedir=None, outtemplatepath=None):
       if downloadercls is None:
         continue
       downloader = downloadercls(resource, basedir)
-      if not downloader.isdepfileexists():
+      if not downloader.isdepfilesexists():
         print('Lambda [{}] with Runtime {} does not have dependency files'.format(key, runtime))
         continue
         
-      print('===== Lambda [{}] {} ====='.format(key, runtime))
+      print('Download dependencies for Lambda [{}] with Runtime {}'.format(key, runtime))
       
       layername = '{}{}H{}'.format(DEFAULT_CACHE, downloader.prefix, downloader.gethash()[:7])
       if layername not in template:

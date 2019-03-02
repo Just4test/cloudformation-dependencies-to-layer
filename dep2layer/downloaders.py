@@ -14,7 +14,6 @@ class PackagerBase:
     self.resource = resource
     self.basedir = basedir
     self.hash = None
-    self.depfiles = []
   
   def isdepfilesexists(self):
     for f in self.depfiles:
