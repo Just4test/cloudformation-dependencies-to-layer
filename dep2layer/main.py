@@ -21,7 +21,6 @@ def gettempfold():
 
 def createlayer(template, layername, resource, downloader, cachedir):
   zippath = os.path.join(cachedir, '{}-{}.zip'.format(downloader.prefix, downloader.gethash()[:7]))
-  layername = 'Dep2layer{}H{}'.format(downloader.prefix, downloader.gethash()[:7])
   if not os.path.isfile(zippath):
     print('Download dependencies...')
     with gettempfold() as tempdir:
@@ -86,7 +85,7 @@ def work(templatepath=None, cachedir=None, outtemplatepath=None):
         
       print('Download dependencies for Lambda [{}] with Runtime {}'.format(key, runtime))
       
-      layername = '{}{}H{}'.format(DEFAULT_CACHE, downloader.prefix, downloader.gethash()[:7])
+      layername = '{}{}H{}'.format(LAYER_PREFIX, downloader.prefix, downloader.gethash()[:7])
       if layername not in template:
         if not createlayer(template, layername, resource, downloader, cachedir):
           continue
