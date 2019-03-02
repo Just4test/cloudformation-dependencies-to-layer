@@ -1,16 +1,23 @@
 import subprocess
 import hashlib
 import os
+import shutil
+
 
 class PackagerBase:
   image = None
-  rundir = None # Need "run.sh" in this dir
+  _rundir = None # Need "run.sh" in this dir
   prefix = None
   
   def __init__(self, resource, basedir):
     self.resource = resource
     self.basedir = basedir
     self.hash = None
+    
+  @property
+  def rundir(self):
+    return os.path.abspath(os.path.join(os.path.realpath(__file__), '..', self._rundir))
+    
   
   def getdeplist(self):
     pass
@@ -22,28 +29,42 @@ class PackagerBase:
       self.hash = sha.hexdigest()
     return self.hash
   
-  def package(self, tmpdir):
+  def package(self, tempdir):
+    print('=========', __file__, os.path.realpath(__file__))
+    
+    # Copy code to temp dir to share with Docker VM
+    runtempdir = os.path.join(tempdir, '.packager')
+    shutil.copytree(self.rundir, runtempdir)
+    
     args = [ 'docker', 'run', '--rm', '--entrypoint', '', \
-      '-v', '{}:/var/task/packager:ro'.format(os.path.abspath(self.rundir)), \
+      '-v', '{}:/var/task/packager:ro'.format(runtempdir), \
       '-v', '{}:/var/task/src:ro'.format(os.path.join(self.basedir, self.resource['Properties']['CodeUri'])), \
-      '-v', '{}:/tmp'.format(tmpdir), \
+      '-v', '{}:/tmp'.format(tempdir), \
       self.image, 'bash', '/var/task/packager/run.sh']
     
     print(args)
     proc = subprocess.Popen(args)
     proc.wait()
     
+    shutil.rmtree(runtempdir)
+    
     return proc.returncode == 0
 
 class Python37Packager(PackagerBase):
   image = 'lambci/lambda:python3.7'
-  rundir = 'python3'
+  _rundir = 'python3'
   prefix = 'Python37'
   
   def getdeplist(self):
     requirementpath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'requirements.txt')
     return [i.strip() for i in open(requirementpath).readlines()]
 
+class Python36Packager(Python37Packager):
+  image = 'lambci/lambda:python3.6'
+  _rundir = 'python3'
+  prefix = 'Python36'
+
 cls = {
   'python3.7': Python37Packager
+  'python3.6': Python36Packager
 }

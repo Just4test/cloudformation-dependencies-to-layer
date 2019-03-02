@@ -1,8 +1,9 @@
 import cfnyaml
 import os
-import tempfile
 import shutil
-import downloaders
+import tempfile
+import platform
+from dep2layer import downloaders
 
 
 DEFAULT_TEMPLATE = 'template.yaml'
@@ -10,13 +11,20 @@ DEFAULT_OUT_TEMPLATE = '.dep2layer-template.yaml'
 DEFAULT_CACHE = '.dep2layer'
 LAYER_PREFIX = 'Dep2layer'
 
+def gettempfold():
+  # In macOS, the default temporary directory cannot be shared with Docker VM.
+  if platform.system() == 'Darwin':
+    return tempfile.TemporaryDirectory(dir='/tmp')
+  else:
+    return tempfile.TemporaryDirectory()
+  
 
 def createlayer(template, layername, resource, downloader, cachedir):
   zippath = os.path.join(cachedir, '{}-{}.zip'.format(downloader.prefix, downloader.gethash()[:7]))
   layername = 'Dep2layer{}H{}'.format(downloader.prefix, downloader.gethash()[:7])
   if not os.path.isfile(zippath):
     print('Download dependencies...')
-    with tempfile.TemporaryDirectory(dir='/tmp') as tempdir:
+    with gettempfold() as tempdir:
       print('Using temp dir: {}'.format(tempdir))
       
       if not downloader.package(tempdir):
@@ -35,7 +43,7 @@ def createlayer(template, layername, resource, downloader, cachedir):
       'Type': 'AWS::Serverless::LayerVersion',
       'Properties': {
         'Layername': 'dep2layer-{}-{}'.format(downloader.prefix, downloader.gethash()[:7]),
-        'Description': '|'.join(downloader.getdeplist()),
+        'Description': 'Create by dep2layer, contain packages:\n{}'.format('|'.join(downloader.getdeplist())),
         'ContentUri': zippath,
         'CompatibleRuntimes' : [resource['Properties']['Runtime']],
         'RetentionPolicy': 'Delete'
