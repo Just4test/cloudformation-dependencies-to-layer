@@ -75,23 +75,30 @@ def work(templatepath=None, cachedir=None, outtemplatepath=None):
     
   for key, resource in list(template['Resources'].items()):
     if resource['Type'] == 'AWS::Serverless::Function':
-      if resource['Properties']['Runtime'] in downloaders.cls:
-        print('===== Lambda [{}] {} ====='.format(key, resource['Properties']['Runtime']))
-        downloader = downloaders.cls[resource['Properties']['Runtime']](resource, basedir)
+      runtime = resource['Properties']['Runtime']
+      downloadercls = downloaders.cls.get(runtime)
+      if cls is None:
+        continue
+      if not downloadercls.isdepfileexists(resource, basedir):
+        print('Lambda [{}] with Runtime {} does not have dependency files'.format(key, runtime))
+        continue
         
-        layername = '{}{}H{}'.format(DEFAULT_CACHE, downloader.prefix, downloader.gethash()[:7])
-        if layername not in template:
-          if not createlayer(template, layername, resource, downloader, cachedir):
-            continue
-            
-        if 'Layers' not in resource['Properties']:
-          resource['Properties']['Layers'] = []
-        for ref in resource['Properties']['Layers']:
-          if ref.logicalName.find(LAYER_PREFIX) == 0:
-            ref.logicalName = layername
-            break
-        else:
-          resource['Properties']['Layers'].append(cfnyaml.Ref(layername))
+      print('===== Lambda [{}] {} ====='.format(key, runtime)
+      downloader = downloadercls(resource, basedir)
+      
+      layername = '{}{}H{}'.format(DEFAULT_CACHE, downloader.prefix, downloader.gethash()[:7])
+      if layername not in template:
+        if not createlayer(template, layername, resource, downloader, cachedir):
+          continue
+          
+      if 'Layers' not in resource['Properties']:
+        resource['Properties']['Layers'] = []
+      for ref in resource['Properties']['Layers']:
+        if ref.logicalName.find(LAYER_PREFIX) == 0:
+          ref.logicalName = layername
+          break
+      else:
+        resource['Properties']['Layers'].append(cfnyaml.Ref(layername))
 
     
   try:

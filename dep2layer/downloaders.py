@@ -8,19 +8,29 @@ class PackagerBase:
   image = None
   _rundir = None # Need "run.sh" in this dir
   prefix = None
+  depfiles = []
   
   def __init__(self, resource, basedir):
     self.resource = resource
     self.basedir = basedir
     self.hash = None
+    self.depfiles = []
+    
+  @classmethod
+  def isdepfilesexists(cls, resource, basedir):
+    for f in cls.depfiles:
+      if not os.path.isfile(os.path.join(self.basedir, self.resource['Properties']['CodeUri'], f)):
+        return False
+    return True
+    
+  def getdeplist(self):
+    pass
     
   @property
   def rundir(self):
     return os.path.abspath(os.path.join(os.path.realpath(__file__), '..', self._rundir))
     
   
-  def getdeplist(self):
-    pass
     
   def gethash(self):
     if self.hash is None:
@@ -54,6 +64,7 @@ class Python37Packager(PackagerBase):
   image = 'lambci/lambda:python3.7'
   _rundir = 'python3'
   prefix = 'Python37'
+  depfiles = ['requirements.txt']
   
   def getdeplist(self):
     requirementpath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'requirements.txt')
@@ -61,10 +72,9 @@ class Python37Packager(PackagerBase):
 
 class Python36Packager(Python37Packager):
   image = 'lambci/lambda:python3.6'
-  _rundir = 'python3'
   prefix = 'Python36'
 
 cls = {
-  'python3.7': Python37Packager
+  'python3.7': Python37Packager,
   'python3.6': Python36Packager
 }
