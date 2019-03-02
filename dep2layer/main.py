@@ -77,7 +77,7 @@ def work(templatepath=None, cachedir=None, outtemplatepath=None):
     if resource['Type'] == 'AWS::Serverless::Function':
       runtime = resource['Properties']['Runtime']
       downloadercls = downloaders.cls.get(runtime)
-      if cls is None:
+      if downloadercls is None:
         continue
       if not downloadercls.isdepfileexists(resource, basedir):
         print('Lambda [{}] with Runtime {} does not have dependency files'.format(key, runtime))
