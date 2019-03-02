@@ -42,8 +42,8 @@ def createlayer(template, layername, resource, downloader, cachedir):
   template['Resources'][layername] = {
       'Type': 'AWS::Serverless::LayerVersion',
       'Properties': {
-        'Layername': 'dep2layer-{}-{}'.format(downloader.prefix, downloader.gethash()[:7]),
-        'Description': 'Create by dep2layer, contain packages:\n{}'.format('|'.join(downloader.getdeplist())),
+        'LayerName': 'dep2layer-{}-{}'.format(downloader.prefix, downloader.gethash()[:7]),
+        'Description': 'Create by dep2layer, contain packages: {}'.format('|'.join(downloader.getdeplist())),
         'ContentUri': zippath,
         'CompatibleRuntimes' : [resource['Properties']['Runtime']],
         'RetentionPolicy': 'Delete'
