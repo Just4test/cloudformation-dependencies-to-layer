@@ -60,7 +60,7 @@ class PackagerBase:
 
 class Python37Packager(PackagerBase):
   image = 'lambci/lambda:python3.7'
-  _rundir = 'python3'
+  _rundir = 'python'
   prefix = 'Python37'
   depfiles = ['requirements.txt']
   
@@ -72,7 +72,12 @@ class Python36Packager(Python37Packager):
   image = 'lambci/lambda:python3.6'
   prefix = 'Python36'
 
+class Python27Packager(Python37Packager):
+  image = 'lambci/lambda:python2.7'
+  prefix = 'Python27'
+
 cls = {
   'python3.7': Python37Packager,
-  'python3.6': Python36Packager
+  'python3.6': Python36Packager,
+  'python2.7': Python27Packager
 }
