@@ -1,5 +1,5 @@
 #!/usr/bin/env bash 
-cd src
+cd /var/task/src
 mkdir /tmp/.dep2layer && cp requirements.txt /tmp/.dep2layer/requirements.txt
 pip install -r requirements.txt --target /tmp/python --no-cache-dir
 code=$?

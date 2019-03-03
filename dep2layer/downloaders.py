@@ -73,7 +73,7 @@ class Python36Packager(Python37Packager):
   prefix = 'Python36'
 
 class Python27Packager(Python37Packager):
-  image = 'lambci/lambda:python2.7'
+  image = 'python:2.7' #There is no pip command in lambci/lambda:python2.7
   prefix = 'Python27'
 
 cls = {
