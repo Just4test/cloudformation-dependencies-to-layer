@@ -2,6 +2,7 @@ import subprocess
 import hashlib
 import os
 import shutil
+import json
 
 
 class PackagerBase:
@@ -66,7 +67,9 @@ class Python37Packager(PackagerBase):
   
   def getdeplist(self):
     requirementpath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'requirements.txt')
-    return [i.strip() for i in open(requirementpath).readlines()]
+    deplist = [i.strip() for i in open(requirementpath).readlines()]
+    deplist.sort()
+    return deplist
 
 class Python36Packager(Python37Packager):
   image = 'lambci/lambda:python3.6'
@@ -75,9 +78,39 @@ class Python36Packager(Python37Packager):
 class Python27Packager(Python37Packager):
   image = 'python:2.7' #There is no pip command in lambci/lambda:python2.7
   prefix = 'Python27'
+  
+
+class NodeJS810Packager(PackagerBase):
+  image = 'lambci/lambda:nodejs8.10'
+  _rundir = 'nodejs'
+  prefix = 'NodeJS810'
+  depfiles = ['package.json']
+  
+  def getdeplist(self):
+    packagepath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'package.json')
+    depmap = json.dump(open(packagepath)).get('dependencies', {})
+    deplist = ['{}:{}'.format(k, v) for k, v in depmap.items()]
+    deplist.sort()
+    
+    lockpath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'package-lock.json')
+    if os.path.isfile(lockpath):
+      lockmap = json.dump(open(lockpath)).get('dependencies', {})
+      locklist =  ['{}:{}'.format(k, v.get('version', [])) for k, v in lockmap.items()]
+      locklist.sort()
+      deplist = deplist + ['==package-lock=='] + locklist
+      
+    return deplist
+    
+
+class NodeJS610Packager(PackagerBase):
+  image = 'lambci/lambda:nodejs6.10'
+  _rundir = 'nodejs'
+  prefix = 'NodeJS610'
 
 cls = {
   'python3.7': Python37Packager,
   'python3.6': Python36Packager,
-  'python2.7': Python27Packager
+  'python2.7': Python27Packager,
+  'nodejs8.10': NodeJS810Packager,
+  'nodejs6.10': NodeJS610Packager,
 }
