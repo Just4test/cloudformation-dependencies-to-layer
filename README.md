@@ -1,4 +1,5 @@
-# Dependencies to layer
+# No longer manually download dependencies for your lambda
+For each of your Lambda in Cloudformation template, this tool can download dependencies and package them to layer.
 
 ## How to use
 ```
