@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'cfn-dep2layer',
-    version = '0.0.30',
+    version = '0.0.31',
     keywords = ('aws', 'lambda', 'layer', 'dependencies'),
     description = 'Package dependencies to layer',
     url = 'https://github.com/Just4test/aws-lambda-dependencies-to-layer',

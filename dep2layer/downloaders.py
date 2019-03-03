@@ -102,7 +102,7 @@ class NodeJS810Packager(PackagerBase):
     return deplist
     
 
-class NodeJS610Packager(PackagerBase):
+class NodeJS610Packager(NodeJS810Packager):
   image = 'lambci/lambda:nodejs6.10'
   _rundir = 'nodejs'
   prefix = 'NodeJS610'
