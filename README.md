@@ -3,9 +3,11 @@ For each of your Lambda in Cloudformation template, this tool can download depen
 
 Support runtime:
 
-- python 3.7
-- python 3.6
-- python 2.7
+- Python 3.7
+- Python 3.6
+- Python 2.7
+- Node.js 8.10
+- Node.js 6.10
 
 ## How to use
 ```

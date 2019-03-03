@@ -88,13 +88,13 @@ class NodeJS810Packager(PackagerBase):
   
   def getdeplist(self):
     packagepath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'package.json')
-    depmap = json.dump(open(packagepath)).get('dependencies', {})
+    depmap = json.load(open(packagepath)).get('dependencies', {})
     deplist = ['{}:{}'.format(k, v) for k, v in depmap.items()]
     deplist.sort()
     
     lockpath = os.path.join(self.basedir, self.resource['Properties']['CodeUri'], 'package-lock.json')
     if os.path.isfile(lockpath):
-      lockmap = json.dump(open(lockpath)).get('dependencies', {})
+      lockmap = json.load(open(lockpath)).get('dependencies', {})
       locklist =  ['{}:{}'.format(k, v.get('version', [])) for k, v in lockmap.items()]
       locklist.sort()
       deplist = deplist + ['==package-lock=='] + locklist
