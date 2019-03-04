@@ -1,7 +1,7 @@
 # No longer manually download dependencies for your lambda
 For each of your Lambda in Cloudformation template, this tool can download dependencies and package them to layer.
 
-Support runtime:
+Support lambda runtime:
 
 - Python 3.7
 - Python 3.6
