@@ -1,0 +1,70 @@
+Resources:
+  Dep2layerNodeJS610Hcfb2c6a:
+    Properties:
+      CompatibleRuntimes:
+      - nodejs6.10
+      ContentUri: s3://jsxf-temp/5f72148ce6b5b1e10218131ff31fac9a
+      Description: 'Create by dep2layer, contain packages: is-number:^7.0.0|==package-lock==|is-number:7.0.0'
+      LayerName: dep2layer-NodeJS610-cfb2c6a
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  Dep2layerNodeJS810Hcfb2c6a:
+    Properties:
+      CompatibleRuntimes:
+      - nodejs8.10
+      ContentUri: s3://jsxf-temp/0da1243abcae73ae7b1a7012eace02f4
+      Description: 'Create by dep2layer, contain packages: is-number:^7.0.0|==package-lock==|is-number:7.0.0'
+      LayerName: dep2layer-NodeJS810-cfb2c6a
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  Dep2layerPython27Hebb0e16:
+    Properties:
+      CompatibleRuntimes:
+      - python2.7
+      ContentUri: s3://jsxf-temp/e0490d970a593e0ef821ef8df462758e
+      Description: 'Create by dep2layer, contain packages: pyyaml'
+      LayerName: dep2layer-Python27-ebb0e16
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  Dep2layerPython37H973563f:
+    Properties:
+      CompatibleRuntimes:
+      - python3.7
+      ContentUri: s3://jsxf-temp/b1b8fec27c78f31d3a6e75b7e973480c
+      Description: 'Create by dep2layer, contain packages: cfn-yaml'
+      LayerName: dep2layer-Python37-973563f
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  nodejs6:
+    Properties:
+      CodeUri: s3://jsxf-temp/6801a221cd7e6215a81936aa7115502b
+      Handler: test.handler
+      Layers:
+      - Ref: Dep2layerNodeJS610Hcfb2c6a
+      Runtime: nodejs6.10
+    Type: AWS::Serverless::Function
+  nodejs8:
+    Properties:
+      CodeUri: s3://jsxf-temp/6801a221cd7e6215a81936aa7115502b
+      Handler: test.handler
+      Layers:
+      - Ref: Dep2layerNodeJS810Hcfb2c6a
+      Runtime: nodejs8.10
+    Type: AWS::Serverless::Function
+  python2:
+    Properties:
+      CodeUri: s3://jsxf-temp/b9aa554523f2899580f161dd30864804
+      Handler: test.handler
+      Layers:
+      - Ref: Dep2layerPython27Hebb0e16
+      Runtime: python2.7
+    Type: AWS::Serverless::Function
+  python3:
+    Properties:
+      CodeUri: s3://jsxf-temp/9e507ac51111375aec88516149fb9e28
+      Handler: test.handler
+      Layers:
+      - Ref: Dep2layerPython37H973563f
+      Runtime: python3.7
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
