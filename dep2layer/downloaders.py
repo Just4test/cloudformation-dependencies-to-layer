@@ -39,8 +39,6 @@ class PackagerBase:
     return self.hash
   
   def package(self, tempdir):
-    print('=========', __file__, os.path.realpath(__file__))
-    
     # Copy code to temp dir to share with Docker VM
     runtempdir = os.path.join(tempdir, '.packager')
     shutil.copytree(self.rundir, runtempdir)

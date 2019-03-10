@@ -30,7 +30,7 @@ def createlayer(template, layername, resource, downloader, cachedir):
         f.write(downloader.gethash())
       
       shutil.make_archive(zippath[:-4], 'zip', tempdir)
-      print('Created content zip: ')
+      print('Created content zip: {}, length {}'.format(zippath, os.path.getsize(zippath)))
   else:
     print('Zip already exist: {}'.format(zippath))
     
