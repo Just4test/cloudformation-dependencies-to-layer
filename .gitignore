@@ -3,3 +3,4 @@ test/.dep2layer*
 /dist
 *.egg-info
 build
+/test/packaged-template.json
