@@ -5,10 +5,6 @@ import tempfile
 import platform
 from dep2layer import downloaders
 
-
-DEFAULT_TEMPLATE = 'template.yaml'
-DEFAULT_OUT_TEMPLATE = '.dep2layer-template.yaml'
-DEFAULT_CACHE = '.dep2layer'
 LAYER_PREFIX = 'Dep2layer'
 
 def gettempfold():
@@ -52,12 +48,12 @@ def createlayer(template, layername, resource, downloader, cachedir):
   return True
 
 
-def work(templatepath=None, cachedir=None, outtemplatepath=None):
+def work(templatepath, cachedir, outtemplatepath):
   
-  templatepath = os.path.abspath(DEFAULT_TEMPLATE if templatepath is None else templatepath)
+#  templatepath = os.path.abspath(DEFAULT_TEMPLATE if templatepath is None else templatepath)
   basedir = os.path.abspath(os.path.join(templatepath, '..'))
-  cachedir = os.path.abspath(os.path.join(basedir, DEFAULT_CACHE) if cachedir is None else cachedir)
-  outtemplatepath = os.path.abspath(os.path.join(basedir, DEFAULT_OUT_TEMPLATE) if outtemplatepath is None else outtemplatepath)
+#  cachedir = os.path.abspath(os.path.join(basedir, DEFAULT_CACHE) if cachedir is None else cachedir)
+#  outtemplatepath = os.path.abspath(os.path.join(basedir, DEFAULT_OUT_TEMPLATE) if outtemplatepath is None else outtemplatepath)
   
   try:
     with open(templatepath) as f:
@@ -69,7 +65,7 @@ def work(templatepath=None, cachedir=None, outtemplatepath=None):
   try:
     os.makedirs(cachedir, exist_ok=True)
   except Exception as e:
-    print('Error when create cache dir: {}\n{}'.format(basedir, e))
+    print('Error when create cache dir: {}\n{}'.format(cachedir, e))
     exit(1)
     
   for key, resource in list(template['Resources'].items()):

@@ -45,14 +45,14 @@ class PackagerBase:
     runtempdir = os.path.join(tempdir, '.packager')
     shutil.copytree(self.rundir, runtempdir)
     
-    args = [ 'docker', 'run', '--rm', '--entrypoint', '', \
+    commands = [ 'docker', 'run', '--rm', '--entrypoint', '', \
       '-v', '{}:/var/task/packager:ro'.format(runtempdir), \
       '-v', '{}:/var/task/src:ro'.format(os.path.join(self.basedir, self.resource['Properties']['CodeUri'])), \
       '-v', '{}:/tmp'.format(tempdir), \
       self.image, 'bash', '/var/task/packager/run.sh']
     
-    print(args)
-    proc = subprocess.Popen(args)
+    print('Run command:', commands)
+    proc = subprocess.Popen(commands)
     proc.wait()
     
     shutil.rmtree(runtempdir)
