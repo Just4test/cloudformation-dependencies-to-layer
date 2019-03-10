@@ -70,5 +70,5 @@ elif args.command == 'clear':
     os.remove(outtemplatepath)
   
 else:
-  print('WHAT IS THIS COMMAND?')
+  print('WHAT IS THIS COMMAND? \nTry dep2layer --help')
   
