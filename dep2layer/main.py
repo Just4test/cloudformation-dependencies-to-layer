@@ -1,4 +1,5 @@
 import cfnyaml
+import json
 import os
 import shutil
 import tempfile
@@ -93,12 +94,15 @@ def work(templatepath, cachedir, outtemplatepath):
           ref.logicalName = layername
           break
       else:
-        resource['Properties']['Layers'].append(cfnyaml.Ref(layername))
+        resource['Properties']['Layers'].append({'Ref': layername})
 
     
   try:
     with open(outtemplatepath, 'w') as f:
-      f.write(cfnyaml.dump(template))
+      if '.json' == outtemplatepath[-5:]:
+        json.dump(template, f)
+      else:
+        f.write(cfnyaml.dump(template))
   except Exception as e:
     print('Error when create out template file: {}\n{}'.format(outtemplatepath, e))
     exit(1)

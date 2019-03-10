@@ -46,15 +46,17 @@ if args.command == 'download':
   dep2layer.work(*getpath(args.template_file, args.cache_dir, args.output_template_file))
   
 elif args.command == 'package':
-  templatepath, cachedir, outtemplatepath = getpath(args.template_file, args.cache_dir, None)
+  templatepath, cachedir, outtemplatepath = getpath(args.template_file, args.cache_dir, args.output_template_file)
   dep2layer.work(templatepath, cachedir, outtemplatepath)
-  commands = [ 'aws', 'cloudformation', 'package', '--template-file', templatepath] + unknownargs
-  if args.output_template_file is not None:
-    commands += ['--output-template-file', args.output_template_file]
+  commands = [ 'aws', 'cloudformation', 'package',
+    '--template-file', args.output_template_file,
+    '--output-template-file', args.output_template_file] + unknownargs
   
   print('Run command:', commands)
   proc = subprocess.Popen(commands)
   proc.wait()
+  if proc.returncode != 0 and os.path.isfile(outtemplatepath):
+    os.remove(outtemplatepath)
   exit(proc.returncode)
 
 elif args.command == 'clear':
