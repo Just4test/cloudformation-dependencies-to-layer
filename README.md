@@ -10,6 +10,8 @@ Support lambda runtime:
 - Node.js 6.10
 
 ## How to use
+Currently only available on macOS python3.
+
 ```
 pip3 install -U cfn-dep2layer
 cd cloudformation-project-rootdir
