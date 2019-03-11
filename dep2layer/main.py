@@ -35,11 +35,14 @@ def createlayer(template, layername, resource, downloader, cachedir):
   else:
     print('Zip already exist: {}'.format(zippath))
     
+  description = 'Create by dep2layer, contain packages: {}'.format('|'.join(downloader.getdeplist()))
+  if len(description) > 256:
+    description = description[:250] + '...'
   template['Resources'][layername] = {
       'Type': 'AWS::Serverless::LayerVersion',
       'Properties': {
         'LayerName': 'dep2layer-{}-{}'.format(downloader.prefix, downloader.gethash()[:7]),
-        'Description': 'Create by dep2layer, contain packages: {}'.format('|'.join(downloader.getdeplist())),
+        'Description': description,
         'ContentUri': zippath,
         'CompatibleRuntimes' : [resource['Properties']['Runtime']],
         'RetentionPolicy': 'Delete'
