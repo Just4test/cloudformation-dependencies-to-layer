@@ -13,6 +13,7 @@ fi
 cd /tmp/nodejs
 export HOME=/tmp #In lambci/lambda:nodejs8.10, default home path doesn't exist
 npm i
+npm r aws-sdk
 code=$?
 if [ $code != 0 ]; then
   echo Install faild. Exit code $code
