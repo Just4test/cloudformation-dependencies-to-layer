@@ -10,9 +10,10 @@ if [ -e package-lock.json ]; then
   cp package-lock.json /tmp/.dep2layer/package-lock.json
 fi
 
+mkdir /tmp/home
+export HOME=/tmp/home #In lambci/lambda:nodejs8.10, default home path doesn't exist
+
 cd /tmp/nodejs
-export HOME=/tmp #In lambci/lambda:nodejs8.10, default home path doesn't exist
-npm i
 npm r aws-sdk
 code=$?
 if [ $code != 0 ]; then
@@ -22,3 +23,4 @@ fi
 
 rm package.json
 rm package-lock.json
+rm -rf $HOME
