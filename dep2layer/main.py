@@ -73,7 +73,7 @@ def work(templatepath, cachedir, outtemplatepath):
     exit(1)
     
   for key, resource in list(template['Resources'].items()):
-    if resource['Type'] == 'AWS::Serverless::Function':
+    if resource.get('Type') == 'AWS::Serverless::Function':
       runtime = resource['Properties']['Runtime']
       downloadercls = downloaders.cls.get(runtime)
       if downloadercls is None:
