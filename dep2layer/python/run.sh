@@ -1,6 +1,6 @@
 #!/usr/bin/env bash 
 cd /var/task/src
-mkdir /tmp/.dep2layer && cp requirements.txt /tmp/.dep2layer/requirements.txt
+mkdir /tmp/.dep2layer && cat requirements.txt | grep -v ^\\s*boto3 >/tmp/.dep2layer/requirements.txt
 pip install -r requirements.txt --target /tmp/python --no-cache-dir
 code=$?
 if [ $code != 0 ]; then
