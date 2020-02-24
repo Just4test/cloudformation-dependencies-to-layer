@@ -3,9 +3,12 @@ For each of your Lambda in Cloudformation template, this tool can download depen
 
 Support lambda runtime:
 
+- Python 3.8
 - Python 3.7
 - Python 3.6
 - Python 2.7
+- Node.js 12.x
+- Node.js 10.x
 - Node.js 8.10
 - Node.js 6.10
 
