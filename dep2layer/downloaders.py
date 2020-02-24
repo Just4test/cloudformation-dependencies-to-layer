@@ -72,6 +72,10 @@ class Python37Packager(PackagerBase):
 class Python36Packager(Python37Packager):
   image = 'lambci/lambda:python3.6'
   prefix = 'Python36'
+  
+class Python38Packager(Python37Packager):
+  image = 'lambci/lambda:python3.8'
+  prefix = 'Python38'
 
 class Python27Packager(Python37Packager):
   image = 'python:2.7' #There is no pip command in lambci/lambda:python2.7
@@ -104,11 +108,24 @@ class NodeJS610Packager(NodeJS810Packager):
   image = 'lambci/lambda:nodejs6.10'
   _rundir = 'nodejs'
   prefix = 'NodeJS610'
+  
+class NodeJS10xPackager(NodeJS810Packager):
+  image = 'lambci/lambda:nodejs10.x'
+  _rundir = 'nodejs'
+  prefix = 'NodeJS10x'
+  
+class NodeJS12xPackager(NodeJS810Packager):
+  image = 'lambci/lambda:nodejs12.x'
+  _rundir = 'nodejs'
+  prefix = 'NodeJS12x'
 
 cls = {
   'python3.7': Python37Packager,
+  'python3.8': Python38Packager,
   'python3.6': Python36Packager,
   'python2.7': Python27Packager,
   'nodejs8.10': NodeJS810Packager,
   'nodejs6.10': NodeJS610Packager,
+  'nodejs10.x': NodeJS10xPackager,
+  'nodejs12.x': NodeJS12xPackager,
 }
