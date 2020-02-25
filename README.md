@@ -1,6 +1,9 @@
 # No longer manually download dependencies for your lambda
 For each of your Lambda in Cloudformation template, this tool can download dependencies and package them to layer.
 
+You can also use [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) command to download dependencies automatically.
+
+
 Support lambda runtime:
 
 - Python 3.8
